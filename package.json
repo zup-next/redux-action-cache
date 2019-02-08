@@ -1,11 +1,18 @@
 {
-  "name": "redux-action-cache",
+  "name": "@zup-next/redux-action-cache",
+  "description": "Cache your redux actions without editing your actions",
   "version": "0.1.0",
   "main": "src/index.js",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zup-next/redux-action-cache"
+  },
+  "homepage": "https://github.com/zup-next/redux-action-cache",
   "scripts": {
     "build": "rollup -c",
-    "test": "jest"
+    "test": "jest",
+    "prepublish": "yarn build"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
