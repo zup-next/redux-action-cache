@@ -96,25 +96,25 @@ for their usages will be given in the next sections.
 The configuration object may contain more than "include" and "invalidations". The full list of
 properties is presented in the following table:
 
-| Property      | Type                      | Required | Description                                                                                                                                                                                                                                  |
-|---------------|---------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| include       | `Array<string\|object>`   | yes      | The array of actions to cache.                                                                                                                                                                                                               |
-| exclude       | `Array<string>`           | no       | An array of actions to exclude from the cache.                                                                                                                                                                                               |
-| invalidations | `Array<object>|Function`  | no       | An array of rules to invalidate the cache or an invalidation function. If a function is passed as parameter, it receives an action name and must return a list of actions to invalidate in case the action passed as parameter is triggered. |
-| validity      | `number`                  | no       | Default validity for the cache. If not specified, the default behavior will be not to use time as a factor when deciding if a cache is valid or not.                                                                                         |
-| persist       | `boolean`                 | no       | States if the default behavior for the cache is to persist or not. If set to true, the cache will persist throughout multiple executions of the website or app. Default is false.                                                            |
+| Property      | Type                       | Required | Description                                                                                                                                                                                                                                  |
+|---------------|----------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| include       | `Array<string\|object>`    | yes      | The array of actions to cache.                                                                                                                                                                                                               |
+| exclude       | `Array<string>`            | no       | An array of actions to exclude from the cache.                                                                                                                                                                                               |
+| invalidations | `Array<object>\|Function`  | no       | An array of rules to invalidate the cache or an invalidation function. If a function is passed as parameter, it receives an action name and must return a list of actions to invalidate in case the action passed as parameter is triggered. |
+| validity      | `number`                   | no       | Default validity for the cache. If not specified, the default behavior will be not to use time as a factor when deciding if a cache is valid or not.                                                                                         |
+| persist       | `boolean`                  | no       | States if the default behavior for the cache is to persist or not. If set to true, the cache will persist throughout multiple executions of the website or app. Default is false.                                                            |
 
 ## Array "include"
 
 The elements of the array "include" can be either strings or objects. The object syntax is used to
 define more complex cache rules, its properties are:
 
-| Property | Type                 | Required | Description                                                                                                                                                                                                                                    |
-|----------|----------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| type     | `'pattern'|'action'` | no       | Type of the inclusion rule. If type is 'pattern', it will try to cache every action matching the given pattern. Otherwise, it will cache only the action with the given name. If not specified, 'action' is assumed.                           |
-| name     | `string|Regex`       | yes      | Exact name of the action to cache (if type is 'action') or the pattern of the actions to cache (if type is 'pattern').                                                                                                                         |
-| validity | `number`             | no       | Time in ms for the cache to expire. If not specified, the expiration time defined in the root of the configuration object will be used. If null or undefined, time won't be used to decide wether the cache is expired or not.                 |
-| persist  | `boolean`            | no       | Specifies if this cache should survive throughout multiple executions of the website or app. When set to true, the cache information will be saved in the local storage. The default value is taken from the root of the configuration object. |
+| Property | Type                  | Required | Description                                                                                                                                                                                                                                    |
+|----------|-----------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| type     | `'pattern'\|'action'` | no       | Type of the inclusion rule. If type is 'pattern', it will try to cache every action matching the given pattern. Otherwise, it will cache only the action with the given name. If not specified, 'action' is assumed.                           |
+| name     | `string\|Regex`       | yes      | Exact name of the action to cache (if type is 'action') or the pattern of the actions to cache (if type is 'pattern').                                                                                                                         |
+| validity | `number`              | no       | Time in ms for the cache to expire. If not specified, the expiration time defined in the root of the configuration object will be used. If null or undefined, time won't be used to decide wether the cache is expired or not.                 |
+| persist  | `boolean`             | no       | Specifies if this cache should survive throughout multiple executions of the website or app. When set to true, the cache information will be saved in the local storage. The default value is taken from the root of the configuration object. |
 
 Defining an element of the "include" array as the string `'MY_ACTION_NAME'`, for instance,  is a
 shortcut to the alternate object syntax: `{ type: 'action', name: 'MY_ACTION_NAME' }`.
@@ -126,9 +126,9 @@ properties:
 
 | Property      | Type                   | Required | Description                                                                                                                                                                                  |
 |---------------|------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| type          | `'action'|'pattern'`   | no       | Type of the rule. If 'action', the invalidation will be set according to the exact names. Otherwise, the invalidation is set for every action matching a pattern. Default is 'action'.       |
-| invalidatedBy | `string|Regex`         | yes      | If the type is 'action', specifies the single action that invalidates the cache. Otherwise, specifies a pattern identifying a multiple set of actions that invalidates the cache.            |
-| invalidated   | `string|Array<string>` | yes      | The action or list of actions to be invalidated. If the type is 'action', the name(s) of the action(s) to be invalidated must be specified. Otherwise, a replacement rule must be specified. |
+| type          | `'action'\|'pattern'`   | no       | Type of the rule. If 'action', the invalidation will be set according to the exact names. Otherwise, the invalidation is set for every action matching a pattern. Default is 'action'.       |
+| invalidatedBy | `string\|Regex`         | yes      | If the type is 'action', specifies the single action that invalidates the cache. Otherwise, specifies a pattern identifying a multiple set of actions that invalidates the cache.            |
+| invalidated   | `string\|Array<string>` | yes      | The action or list of actions to be invalidated. If the type is 'action', the name(s) of the action(s) to be invalidated must be specified. Otherwise, a replacement rule must be specified. |
 
 # Using patterns
 
