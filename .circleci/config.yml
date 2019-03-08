@@ -35,5 +35,7 @@ jobs:
 
       # run tests!
       - run: yarn test
+        # run type check!
+      - run: yarn type-check
       # run build!
       - run: yarn build

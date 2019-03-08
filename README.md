@@ -1,4 +1,5 @@
 # Redux Action Cache
+<img src="https://i.imgur.com/Iu2cxOv.png" width="100">
 
 This project came up from our need of using a cache system instead of making duplicated requests for 
 resources that might be already available. The primary objective of this library is to provide

@@ -1,6 +1,11 @@
 module.exports = {
-    "extends": "standard",
-    "env": {
-        "jest": true
-      }  
+  "extends": "standard",
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "env": {
+      "jest": true
+    },
+    "rules": {
+      "comma-dangle": ["error", "always-multiline"]
+    },
 };
