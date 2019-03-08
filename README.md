@@ -1,9 +1,5 @@
 # Redux Action Cache
 
-<img src="https://i.imgur.com/E4rwrW4.png" width="300">
-
-## Introduction
-
 This project came up from our need of using a cache system instead of making duplicated requests for 
 resources that might be already available. The primary objective of this library is to provide
 such functionality through a simple configuration file, without altering any of your existing code.
@@ -38,20 +34,32 @@ invalidated (if they can ever be invalidated).
 
 # Installing the library
 
+```
+yarn add @zup-next/redux-action-cache
+```
+
+or
+
+```
+npm install @zup-next/redux-action-cache
+```
+
 # Basic configuration
 
 To create the middleware, the only thing you need is to call the function `createCacheManager` with
 a configuration object. See the code below.
 
 ```javascript
+import { createCacheManager } from '@zup-next/redux-action-cache'
+
 export const cacheManager = createCacheManager({
   include: ['USER_BALANCE/LOAD', 'USER_DATA/LOAD', 'PRODUCTS/LOAD'],
   invalidations: [
-    { invalidated: 'USER_BALANCE/LOAD', invalidatedBy: 'USER_BALANCE/ERROR' },
-    { invalidated: 'USER_DATA/LOAD', invalidatedBy: 'USER_DATA/ERROR' },
-    { invalidated: 'PRODUCTS/LOAD', invalidatedBy: 'PRODUCTS/ERROR' },
-    { invalidated: ['USER_BALANCE/LOAD', 'USER_ORDERS/LOAD'], invalidatedBy: 'PURCHASE/SUCCESS' },
-    { invalidated: 'USER_DATA/LOAD', invalidatedBy: 'USER_DATA/UPDATE' },
+    { invalidatedBy: 'USER_BALANCE/ERROR', invalidated: 'USER_BALANCE/LOAD' },
+    { invalidatedBy: 'USER_DATA/ERROR', invalidated: 'USER_DATA/LOAD' },
+    { invalidatedBy: 'PRODUCTS/ERROR', invalidated: 'PRODUCTS/LOAD' },
+    { invalidatedBy: 'PURCHASE/SUCCESS', invalidated: ['USER_BALANCE/LOAD', 'USER_ORDERS/LOAD'] },
+    { invalidatedBy: 'USER_DATA/UPDATE', invalidated: 'USER_DATA/LOAD' },
   ],
 })
 ```
@@ -88,14 +96,13 @@ for their usages will be given in the next sections.
 The configuration object may contain more than "include" and "invalidations". The full list of
 properties is presented in the following table:
 
-| Property         | Type                      | Required | Description                                                                                                                                                                                                          |
-|------------------|---------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| include          | `Array<string|object>`    | yes      | The array of actions to cache.                                                                                                                                                                                       |
-| exclude          | `Array<string>`           | no       | An array of actions to exclude from the cache.                                                                                                                                                                       |
-| invalidations    | `Array<object>`           | no       | An array of rules to invalidate the cache.                                                                                                                                                                           |
-| invalidationRule | `string => Array<String>` | no       | If specified will be used instead of the array "invalidations". This is a function that receives an action name and must return a list of actions to invalidate in case the action passed as parameter is triggered. |
-| validity         | `number`                  | no       | Default validity for the cache. If not specified, the default behavior will be not to use time as a factor when deciding if a cache is valid or not.                                                                 |
-| persist          | `boolean`                 | no       | States if the default behavior for the cache is to persist or not. If set to true, the cache will persist throughout multiple executions of the website or app. Default is false.                                    |
+| Property      | Type                     | Required | Description                                                                                                                                                                                                                                  |
+|---------------|--------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| include       | `Array<string|object>`   | yes      | The array of actions to cache.                                                                                                                                                                                                               |
+| exclude       | `Array<string>`          | no       | An array of actions to exclude from the cache.                                                                                                                                                                                               |
+| invalidations | `Array<object>|Function` | no       | An array of rules to invalidate the cache or an invalidation function. If a function is passed as parameter, it receives an action name and must return a list of actions to invalidate in case the action passed as parameter is triggered. |
+| validity      | `number`                 | no       | Default validity for the cache. If not specified, the default behavior will be not to use time as a factor when deciding if a cache is valid or not.                                                                                         |
+| persist       | `boolean`                | no       | States if the default behavior for the cache is to persist or not. If set to true, the cache will persist throughout multiple executions of the website or app. Default is false.                                                            |
 
 ## Array "include"
 
@@ -114,7 +121,8 @@ shortcut to the alternate object syntax: `{ type: 'action', name: 'MY_ACTION_NAM
 
 ## Array "invalidations"
 
-The objects passed to the array "invalidations" may have the following properties:
+If "invalidations" is an array instead of a function, its elements may have the following
+properties:
 
 | Property      | Type                   | Required | Description                                                                                                                                                                                  |
 |---------------|------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -163,8 +171,8 @@ export const cacheManager = createCacheManager({
   ],
   invalidations: [
     { type: 'pattern', invalidatedBy: /(.+)\/ERROR$/, invalidated: '$1/LOAD' },
-    { invalidated: ['USER_BALANCE/LOAD', 'USER_ORDERS/LOAD'], invalidatedBy: 'PURCHASE/SUCCESS' },
-    { invalidated: 'USER_DATA/LOAD', invalidatedBy: 'USER_DATA/UPDATE' },
+    { invalidatedBy: 'PURCHASE/SUCCESS', invalidated: ['USER_BALANCE/LOAD', 'USER_ORDERS/LOAD'] },
+    { invalidatedBy: 'USER_DATA/UPDATE', invalidated: 'USER_DATA/LOAD' },
   ],
 })
 ```
@@ -175,19 +183,18 @@ In the example above, we use regex and capture groups to specify that every acti
 # Customizing the invalidation rule
 
 If, for some reason, the default way of declaring invalidations is not enough for your needs, you
-could completely replace the "invalidations" array for the function "invalidationRule".
+could completely replace the "invalidations" array for a function.
 
-If a function is specified in the parameter "invalidationRule", the "invalidation" array is ignored
-and what decides if a cache will be invalidated or not is the custom function. The custom function
-receives an action name and must return an array of actions to be invalidated. See the example
-below:
+If a function is specified in the parameter "invalidations", what decides if a cache will be
+invalidated or not is the return value of the function. The "invalidations" function receives an
+action name and must return an array of actions to be invalidated. See the example below:
 
 ```javascript
 export const cacheManager = createCacheManager({
   include: [
     { type: 'pattern', name: /\/LOAD$/ }
   ],
-  invalidationRule: (actionName) => {
+  invalidations: (actionName) => {
     if (actionName.match(/\/ERROR$/)) return [actionName.replace('ERROR', 'LOAD')]
     if (actionName === 'PURCHASE/SUCCESS') return ['USER_BALANCE/LOAD', 'USER_ORDERS/LOAD']
     if (actionName === 'USER_DATA/UPDATE') return ['USER_DATA/LOAD']
@@ -198,7 +205,7 @@ export const cacheManager = createCacheManager({
 ```
 
 The code above does exactly what the code of the previous example does, but through a function
-instead of the array "invalidation".
+instead of an array.
 
 # Cache expiration time
 
