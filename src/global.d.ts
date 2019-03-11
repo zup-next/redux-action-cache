@@ -1,12 +1,12 @@
 type CacheProperties = {
   name: string,
-  validity: number,
+  validity?: number,
   persist: boolean,
 }
 
 type CacheObject = {
-  lastUpdated: string,
-  validity: number,
+  lastUpdated: number,
+  validity?: number,
   persist: boolean,
 }
 

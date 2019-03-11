@@ -1,4 +1,4 @@
-import { getDate, isExpired, addSeconds } from './utils/date'
+import { getDate, isExpired } from './utils/date'
 import reduce from 'lodash/reduce'
 
 const cachePersistName = '@ReduxActionCache:cache'
@@ -11,9 +11,8 @@ const Cache = () => {
   const isCacheValid = (name: string) => {
     const lastUpdated = cache[name].lastUpdated
     const validity = cache[name].validity
-    const expireDate = addSeconds(lastUpdated, validity).toISOString()
 
-    return !isExpired(expireDate)
+    return validity === undefined ? true : !isExpired(lastUpdated, validity)
   }
 
   const isActionCached = (name: string) => {
@@ -24,7 +23,7 @@ const Cache = () => {
 
   const createCache = ({ name, validity, persist }: CacheProperties) => {
     cache[name] = {
-      lastUpdated: getDate(''),
+      lastUpdated: getDate(),
       validity,
       persist,
     }
