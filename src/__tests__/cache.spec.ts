@@ -5,7 +5,7 @@ describe('Cache Object', () => {
     const cache = CreateCache()
     const actionName = 'USER/LOAD'
     cache.createCache({ name: actionName, validity: 3000, persist: true })
-    const cacheObject = cache.getCacheObject()[actionName]
+    const cacheObject = cache.getCacheByAction(actionName)
     expect(cacheObject.validity).toBe(3000)
     expect(cacheObject.persist).toBeTruthy()
   })
@@ -15,7 +15,7 @@ describe('Cache Object', () => {
     const actionName = 'USER/LOAD'
     cache.createCache({ name: actionName, validity: 3000, persist: true })
     cache.removeCache(actionName)
-    expect(cache.getCacheObject()).toMatchObject({})
+    expect(cache.getCacheByAction(actionName)).toEqual({})
   })
 
   it('Should isActionCached be true ', () => {

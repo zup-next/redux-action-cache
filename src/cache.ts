@@ -29,7 +29,7 @@ const Cache = () => {
     }
   }
 
-  const getCacheObject = () => cache
+  const getCacheByAction = (name: string) => ({ ...cache[name] })
 
   const removeCache = (name: string) => delete cache[name]
 
@@ -50,7 +50,7 @@ const Cache = () => {
   return {
     isActionCached,
     createCache,
-    getCacheObject,
+    getCacheByAction,
     removeCache,
     persist,
     load,
