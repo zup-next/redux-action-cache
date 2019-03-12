@@ -13,7 +13,8 @@
     "build": "rollup -c",
     "test": "jest",
     "prepublish": "yarn build",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "eslint": "eslint src --ext .ts"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
