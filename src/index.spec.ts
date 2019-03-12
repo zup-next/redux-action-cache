@@ -1,5 +1,5 @@
-import sayHello from './index'
+import { createCacheManager } from './'
 
-test('should sayHello', () => {
-  expect(sayHello('redux-action-cache')).toBe('redux-action-cache')
+test('should import', () => {
+  expect(typeof createCacheManager).toBe('function')
 })

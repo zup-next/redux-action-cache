@@ -33,16 +33,16 @@ const Cache = () => {
 
   const removeCache = (name: string) => delete cache[name]
 
-  const persist = (setItem: SetItemProperties) => {
-    const cacheable = reduce(cache, (result, value, key) => {
+  const persist = (setItem: Storage['setItem']) => {
+    const cacheToPersist = reduce(cache, (result, value, key) => {
       if (value.persist) return { ...result, [key]: value }
       return result
     }, {})
 
-    setItem(cachePersistName, JSON.stringify(cacheable))
+    setItem(cachePersistName, JSON.stringify(cacheToPersist))
   }
 
-  const load = async (getItem: GetItemProperties) => {
+  const load = async (getItem: Storage['getItem']) => {
     const data = await promisify(getItem(cachePersistName))
     cache = data && JSON.parse(data)
   }
