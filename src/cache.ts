@@ -29,6 +29,8 @@ const Cache = () => {
     }
   }
 
+  const getCacheObject = () => cache
+
   const removeCache = (name: string) => delete cache[name]
 
   const persist = (setItem: SetItemProperties) => {
@@ -48,6 +50,7 @@ const Cache = () => {
   return {
     isActionCached,
     createCache,
+    getCacheObject,
     removeCache,
     persist,
     load,
