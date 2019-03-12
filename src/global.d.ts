@@ -31,3 +31,19 @@ type Store = {
 type Action = {
   type: string,
 }
+
+type CacheProperties = {
+  name: string,
+  validity?: number,
+  persist?: boolean,
+}
+
+type CacheObject = {
+  lastUpdated: number,
+  validity?: number,
+  persist?: boolean,
+}
+
+type CacheMap = {
+  [key:string]: CacheObject,
+}

@@ -22,9 +22,11 @@ export default (config: ConfigType, actionName: string) => {
 
   const cacheRule = getCacheRule(config.include, actionName)
 
-  if (cacheRule) return {
-    name: actionName,
-    validity: cacheRule && cacheRule.validity ? cacheRule.validity : config.validity,
-    persist: cacheRule.persist !== undefined ? cacheRule.persist : config.persist,
+  if (cacheRule) {
+    return {
+      name: actionName,
+      validity: cacheRule.validity ? cacheRule.validity : config.validity,
+      persist: cacheRule.persist !== undefined ? cacheRule.persist : config.persist,
+    }
   }
 }
