@@ -23,6 +23,7 @@ export default {
       babelrc: true,
       exclude: 'node_modules/**',
       extensions,
+      runtimeHelpers: true,
     }),
     resolve({
       extensions,
