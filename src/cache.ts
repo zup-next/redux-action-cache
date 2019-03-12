@@ -1,7 +1,7 @@
 import { getDate, isExpired } from './utils/date'
 import reduce from 'lodash/reduce'
 
-const cachePersistName = '@ReduxActionCache:cache'
+export const cachePersistName = '@ReduxActionCache:cache'
 
 const promisify = (result: any) => result && result.then ? result : Promise.resolve(result)
 
