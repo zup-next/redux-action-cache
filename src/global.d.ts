@@ -1,5 +1,3 @@
-import invalidateCache from "invalidate-cache";
-
 type InvalidationFunction = (actionName: string) => Array<string>
 
 interface CacheRule {
