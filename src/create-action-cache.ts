@@ -25,7 +25,7 @@ export default (config: ConfigType, actionName: string) => {
   if (cacheRule) {
     return {
       name: actionName,
-      validity: cacheRule.validity ? cacheRule.validity : config.validity,
+      validity: cacheRule.validity !== undefined ? cacheRule.validity : config.validity,
       persist: cacheRule.persist !== undefined ? cacheRule.persist : config.persist,
     }
   }

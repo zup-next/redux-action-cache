@@ -12,7 +12,7 @@ const Cache = () => {
     const lastUpdated = cache[name].lastUpdated
     const validity = cache[name].validity
 
-    return validity === undefined ? true : !isExpired(lastUpdated, validity)
+    return validity ? !isExpired(lastUpdated, validity) : true
   }
 
   const isActionCached = (name: string) => {
