@@ -1,13 +1,13 @@
 type InvalidationFunction = (actionName: string) => Array<string>
 
-type CacheRule = {
+interface CacheRule {
   type?: 'pattern' | 'action',
   name: string | RegExp,
   validity?: number,
   persist?: boolean,
 }
 
-type InvalidationRule = {
+interface InvalidationRule {
   type?: 'pattern' | 'action',
   invalidatedBy: string|RegExp,
   invalidated: Array<string>|string,
@@ -15,35 +15,35 @@ type InvalidationRule = {
 
 type Invalidations = Array<InvalidationRule> | InvalidationFunction | undefined
 
-type ConfigType = {
+interface ConfigType {
   include: Array<string|CacheRule>,
-  exclude?: Array<String>,
+  exclude?: Array<string>,
   invalidations: Invalidations,
   validity?: number,
   persist?: boolean,
   storage?: Storage,
 }
 
-type Store = {
+interface Store {
   getState: Function,
 }
 
-type Action = {
+interface Action {
   type: string,
 }
 
-type CacheProperties = {
+interface CacheProperties {
   name: string,
   validity?: number,
   persist?: boolean,
 }
 
-type CacheObject = {
+interface CacheObject {
   lastUpdated: number,
   validity?: number,
   persist?: boolean,
 }
 
-type CacheMap = {
-  [key:string]: CacheObject,
+interface CacheMap {
+  [key: string]: CacheObject,
 }

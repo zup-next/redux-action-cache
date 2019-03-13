@@ -35,7 +35,9 @@ jobs:
 
       # run tests!
       - run: yarn test
-        # run type check!
+      # run type check!
       - run: yarn type-check
+      # run eslint
+      - run: yarn eslint
       # run build!
       - run: yarn build
