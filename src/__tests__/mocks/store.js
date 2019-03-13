@@ -26,18 +26,16 @@ const reducer = (state = initialState, action) => {
     'PRODUCTS/LOAD': () => ({ ...state, products: { ...state.products, status: LOADING } }),
     'PRODUCTS/ERROR': () => ({ ...state, products: { ...state.products, status: ERROR } }),
     'PRODUCTS/SUCCESS': ({ data }) => ({ ...state, products: { status: SUCCESS, data } }),
-    'ORDER/LOAD': () => ({ ...state, userData: { ...state.userData, status: LOADING } }),
-    'ORDER/ERROR': () => ({ ...state, userData: { ...state.userData, status: ERROR } }),
-    'ORDER/SUCCESS': ({ data }) => ({ ...state, userData: { ...state.userData, status: SUCCESS, data } }),
-    'ORDER/CREATE': () => ({ ...state, userData: { ...state.userData, createStatus: LOADING } }),
-    'ORDER/CREATE_ERROR': () => ({ ...state, userData: { ...state.userData, createStatus: ERROR } }),
-    'ORDER/CREATE_SUCCESS': () => ({ ...state, userData: { ...state.userData, createStatus: SUCCESS } }),
+    'ORDER/LOAD': () => ({ ...state, order: { ...state.order, status: LOADING } }),
+    'ORDER/ERROR': () => ({ ...state, order: { ...state.order, status: ERROR } }),
+    'ORDER/SUCCESS': ({ data }) => ({ ...state, order: { ...state.order, status: SUCCESS, data } }),
+    'ORDER/CREATE': () => ({ ...state, order: { ...state.order, createStatus: LOADING } }),
+    'ORDER/CREATE_ERROR': () => ({ ...state, order: { ...state.order, createStatus: ERROR } }),
+    'ORDER/CREATE_SUCCESS': () => ({ ...state, order: { ...state.order, createStatus: SUCCESS } }),
   }
 
   const fn = map[action.type]
   return fn ? fn(action) : state
 }
 
-export default (cacheManager) => {
-  createStore(reducer, applyMiddleware(cacheManager.getMiddleware()))
-}
+export default (cacheManager) => createStore(reducer, applyMiddleware(cacheManager.getMiddleware()))
