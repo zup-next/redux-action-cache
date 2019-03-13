@@ -13,7 +13,8 @@
     "build": "rollup -c",
     "test": "jest",
     "prepublish": "yarn build",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "eslint": "eslint src --ext .ts"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -34,6 +35,8 @@
     "redux": "^4.0.1",
     "rollup": "^1.6.0",
     "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^9.2.1",
+    "rollup-plugin-node-resolve": "^4.0.1",
     "rollup-plugin-uglify": "^6.0.2",
     "typescript": "^3.3.3333"
   },
