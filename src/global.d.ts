@@ -1,3 +1,5 @@
+import invalidateCache from "invalidate-cache";
+
 type InvalidationFunction = (actionName: string) => Array<string>
 
 interface CacheRule {
@@ -18,7 +20,7 @@ type Invalidations = Array<InvalidationRule> | InvalidationFunction | undefined
 interface ConfigType {
   include: Array<string|CacheRule>,
   exclude?: Array<string>,
-  invalidations: Invalidations,
+  invalidations?: Invalidations,
   validity?: number,
   persist?: boolean,
   storage?: Storage,
