@@ -1,9 +1,9 @@
 import { getDate, isExpired } from './utils/date'
 import reduce from 'lodash/reduce'
 
-const cachePersistName = '@ReduxActionCache:cache'
+export const cachePersistName = '@ReduxActionCache:cache'
 
-const promisify = (result: any) => result.then ? result : Promise.resolve(result)
+const promisify = (result: any) => result && result.then ? result : Promise.resolve(result)
 
 const Cache = () => {
   let cache: CacheMap = {}
@@ -29,6 +29,8 @@ const Cache = () => {
     }
   }
 
+  const getCacheByAction = (name: string) => ({ ...cache[name] })
+
   const removeCache = (name: string) => delete cache[name]
 
   const persist = (setItem: Storage['setItem']) => {
@@ -42,12 +44,13 @@ const Cache = () => {
 
   const load = async (getItem: Storage['getItem']) => {
     const data = await promisify(getItem(cachePersistName))
-    cache = JSON.parse(data)
+    cache = data && JSON.parse(data)
   }
 
   return {
     isActionCached,
     createCache,
+    getCacheByAction,
     removeCache,
     persist,
     load,
