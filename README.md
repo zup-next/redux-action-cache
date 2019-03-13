@@ -1,6 +1,9 @@
 # Redux Action Cache
 <img src="https://i.imgur.com/Iu2cxOv.png" width="100">
 
+![CircleCI branch](https://img.shields.io/circleci/project/github/zup-next/redux-action-cache/master.svg)
+![npm](https://img.shields.io/npm/v/@zup-next/redux-action-cache.svg)
+
 This project came up from our need of using a cache system instead of making duplicated requests for 
 resources that might be already available. The primary objective of this library is to provide
 such functionality through a simple configuration file, without altering any of your existing code.
