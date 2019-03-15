@@ -4,7 +4,7 @@ import { wait } from 'utils/tests'
 
 describe('Expiration', () => {
   it('should expire', async () => {
-    const cacheManager = createCacheManager({ include: [{ name: 'BALANCE/LOAD', validity: 2 }] })
+    const cacheManager = createCacheManager({ include: [{ name: 'BALANCE/LOAD', validity: 1 }] })
     const store = createStore(cacheManager)
     store.dispatch({ type: 'BALANCE/LOAD' })
     store.dispatch({ type: 'BALANCE/SUCCESS' })
@@ -12,7 +12,7 @@ describe('Expiration', () => {
 
     expect(store.getState().balance.status).toBe(SUCCESS)
 
-    await wait(2100)
+    await wait(1100)
     store.dispatch({ type: 'BALANCE/LOAD' })
     expect(store.getState().balance.status).toBe(LOADING)
   })
@@ -23,7 +23,7 @@ describe('Expiration', () => {
         { type: 'pattern', name: '/LOAD$' },
         { name: 'PRODUCTS/LOAD', validity: 0 },
       ],
-      validity: 2,
+      validity: 1,
     })
     const store = createStore(cacheManager)
 
@@ -37,7 +37,7 @@ describe('Expiration', () => {
     expect(store.getState().balance.status).toBe(SUCCESS)
     expect(store.getState().products.status).toBe(SUCCESS)
 
-    await wait(2100)
+    await wait(1100)
 
     store.dispatch({ type: 'BALANCE/LOAD' })
     store.dispatch({ type: 'PRODUCTS/LOAD' })
@@ -50,7 +50,7 @@ describe('Expiration', () => {
     const cacheManager = createCacheManager({
       include: [
         { type: 'pattern', name: '/LOAD$' },
-        { name: 'PRODUCTS/LOAD', validity: 2 },
+        { name: 'PRODUCTS/LOAD', validity: 1 },
       ],
     })
     const store = createStore(cacheManager)
@@ -65,7 +65,7 @@ describe('Expiration', () => {
     expect(store.getState().balance.status).toBe(SUCCESS)
     expect(store.getState().products.status).toBe(SUCCESS)
 
-    await wait(2100)
+    await wait(1100)
 
     store.dispatch({ type: 'BALANCE/LOAD' })
     store.dispatch({ type: 'PRODUCTS/LOAD' })

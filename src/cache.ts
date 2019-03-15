@@ -3,8 +3,6 @@ import reduce from 'lodash/reduce'
 
 export const cachePersistName = '@ReduxActionCache:cache'
 
-const promisify = (result: any) => result && result.then ? result : Promise.resolve(result)
-
 const Cache = () => {
   let cache: CacheMap = {}
 
@@ -44,9 +42,15 @@ const Cache = () => {
     setItem(cachePersistName, JSON.stringify(cacheToPersist))
   }
 
-  const load = async (getItem: Storage['getItem']) => {
-    const data = await promisify(getItem(cachePersistName))
-    cache = data && JSON.parse(data)
+  const updateCacheWithJson = (json: string | null) => {
+    if (json) cache = { ...JSON.parse(json), ...cache }
+  }
+
+  const load = (getItem: Storage['getItem'] | AsyncStorage['getItem']) => {
+    const persistedCache = getItem(cachePersistName)
+
+    if (persistedCache instanceof Promise) persistedCache.then(updateCacheWithJson)
+    else updateCacheWithJson(persistedCache)
   }
 
   return {
