@@ -35,11 +35,6 @@ module.exports = {
         use: {
           loader: 'babel-loader',
         },
-      },
-      {
-        test: /.tsx?$/,
-        loader: 'awesome-typescript-loader',
-        exclude: /node_modules/,
       }, {
         test: /.js$/,
         loader: 'source-map-loader',

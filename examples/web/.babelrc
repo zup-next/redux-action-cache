@@ -1,19 +1,7 @@
 {
   "presets": [
-    ["@babel/preset-env", { "modules": false, "loose": true }],
-    "@babel/preset-typescript"
+    "@babel/env",
+    "@babel/typescript",
+    "@babel/react"
   ],
-  "plugins": [
-    "@babel/plugin-transform-runtime"
-  ],
-  "env": {
-    "test": {
-      "presets": [
-        ["@babel/preset-env"]
-      ],
-      "plugins": [
-        "@babel/plugin-transform-runtime"
-      ]
-    },
-  }
 }
