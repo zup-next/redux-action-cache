@@ -3,8 +3,6 @@ import reduce from 'lodash/reduce'
 
 export const cachePersistName = '@ReduxActionCache:cache'
 
-const promisify = (result: any) => result && result.then ? result : Promise.resolve(result)
-
 const Cache = () => {
   let cache: CacheMap = {}
 
