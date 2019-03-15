@@ -44,9 +44,15 @@ const Cache = () => {
     setItem(cachePersistName, JSON.stringify(cacheToPersist))
   }
 
-  const load = async (getItem: Storage['getItem']) => {
-    const data = await promisify(getItem(cachePersistName))
-    cache = data && JSON.parse(data)
+  const updateCacheWithJson = (json: string | null) => {
+    if (json) cache = { ...JSON.parse(json), ...cache }
+  }
+
+  const load = (getItem: Storage['getItem'] | AsyncStorage['getItem']) => {
+    const persistedCache = getItem(cachePersistName)
+
+    if (persistedCache instanceof Promise) persistedCache.then(updateCacheWithJson)
+    else updateCacheWithJson(persistedCache)
   }
 
   return {

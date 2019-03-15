@@ -15,13 +15,18 @@ interface InvalidationRule {
 
 type Invalidations = Array<InvalidationRule> | InvalidationFunction | undefined
 
+interface AsyncStorage {
+  setItem: (key: string, value: string) => Promise<void>,
+  getItem: (key: string) => Promise<string | null>,
+}
+
 interface ConfigType {
   include: Array<string|CacheRule>,
   exclude?: Array<string>,
   invalidations?: Invalidations,
   validity?: number,
   persist?: boolean,
-  storage?: Storage,
+  storage?: Storage | AsyncStorage,
 }
 
 interface Store {
