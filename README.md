@@ -8,7 +8,7 @@
 
 This project came up from our need of using a cache system instead of making duplicated requests for 
 resources that might be already available. The primary objective of this library is to provide
-such functionality through a simple configuration file, without altering any of your existing code.
+such functionality through a simple configuration file, without altering any of the existing code.
 
 ## The problem
 
@@ -107,8 +107,10 @@ properties is presented in the following table:
 | include       | `Array<string\|object>`    | yes      | The array of actions to cache.                                                                                                                                                                                                               |
 | exclude       | `Array<string>`            | no       | An array of actions to exclude from the cache.                                                                                                                                                                                               |
 | invalidations | `Array<object>\|Function`  | no       | An array of rules to invalidate the cache or an invalidation function. If a function is passed as parameter, it receives an action name and must return a list of actions to invalidate in case the action passed as parameter is triggered. |
-| validity      | `number`                   | no       | Default validity for the cache. If not specified, the default behavior will be not to use time as a factor when deciding if a cache is valid or not.                                                                                         |
+| validity      | `number`                   | no       | Default validity for the cache. If not specified, the default behavior will be not to use time as a factor when deciding if a cache is valid or not.  Time is set in seconds.                                                                                        |
 | persist       | `boolean`                  | no       | States if the default behavior for the cache is to persist or not. If set to true, the cache will persist throughout multiple executions of the website or app. Default is false.                                                            |
+| storage       | `object`                   | no       | Storage to persist the cache. Must implement `getItem(string): string` and `setItem(string): void`. Your storage may also be asynchronous, implementing: `getItem(string): Promise<string>` and `setItem(string): Promise<void>`. Examples of valid storages are: localStorage for web applications; and AsyncStorage for React Native. |
+
 
 ## Array "include"
 
@@ -119,7 +121,7 @@ define more complex cache rules, its properties are:
 |----------|-----------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | type     | `'pattern'\|'action'` | no       | Type of the inclusion rule. If type is 'pattern', it will try to cache every action matching the given pattern. Otherwise, it will cache only the action with the given name. If not specified, 'action' is assumed.                           |
 | name     | `string\|Regex`       | yes      | Exact name of the action to cache (if type is 'action') or the pattern of the actions to cache (if type is 'pattern').                                                                                                                         |
-| validity | `number`              | no       | Time in ms for the cache to expire. If not specified, the expiration time defined in the root of the configuration object will be used. If null or undefined, time won't be used to decide wether the cache is expired or not.                 |
+| validity | `number`              | no       | Time in seconds for the cache to expire. If not specified, the expiration time defined in the root of the configuration object will be used. If null or undefined, time won't be used to decide wether the cache is expired or not.          |
 | persist  | `boolean`             | no       | Specifies if this cache should survive throughout multiple executions of the website or app. When set to true, the cache information will be saved in the local storage. The default value is taken from the root of the configuration object. |
 
 Defining an element of the "include" array as the string `'MY_ACTION_NAME'`, for instance,  is a
@@ -223,7 +225,7 @@ export const cacheManager = createCacheManager({
   include: [
     { type: 'pattern', name: /\/LOAD$/ }
   ],
-  validity: 3600000,
+  validity: 3600,
 })
 ```
 
@@ -235,9 +237,9 @@ belonging to the "include" array. See the example below:
 export const cacheManager = createCacheManager({
   include: [
     { type: 'pattern', name: /\/LOAD$/ },
-    { type: 'action', name: 'USER_BALANCE/LOAD', validity: 60000 },
+    { type: 'action', name: 'USER_BALANCE/LOAD', validity: 60 },
   ],
-  validity: 3600000,
+  validity: 3600,
 })
 ```
 
@@ -263,10 +265,11 @@ level. See the example below:
 export const cacheManager = createCacheManager({
   include: [
     { type: 'pattern', name: /\/LOAD$/ },
-    { type: 'action', name: 'USER_BALANCE/LOAD', validity: 60000, persist: false },
+    { type: 'action', name: 'USER_BALANCE/LOAD', validity: 60, persist: false },
   ],
-  validity: 3600000,
+  validity: 3600,
   persist: true,
+  storage: localStorage,
 })
 ```
 
@@ -275,6 +278,11 @@ other actions will.
 
 Another use for the "persist" property is when you want an action to be executed only in the first
 execution of the application. In this case, there is no need to also persist the redux state.
+
+Note for asynchronous storages: the cache will function as an empty cache until `getItem` returns
+with a response. When the response arrives, the cache will be loaded as expected. If some action
+has been dispatched before the persisted cache was available, the expiration data taken into account
+will be related to the most recent action dispatched.
 
 # Forcing cache invalidation
 
