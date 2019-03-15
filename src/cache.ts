@@ -31,7 +31,9 @@ const Cache = () => {
 
   const getCacheByAction = (name: string) => ({ ...cache[name] })
 
-  const removeCache = (name: string) => delete cache[name]
+  const removeCache = (name: string) => {
+    delete cache[name]
+  }
 
   const persist = (setItem: Storage['setItem']) => {
     const cacheToPersist = reduce(cache, (result, value, key) => {
