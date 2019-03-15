@@ -1,2 +1,7 @@
 node_modules/
 lib/
+
+# General MACOS
+.DS_Store
+.AppleDouble
+.LSOverride
