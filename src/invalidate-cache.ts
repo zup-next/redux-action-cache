@@ -26,7 +26,7 @@ const defaultInvalidation = (invalidationRules: Invalidations, actionName: strin
     return [...result, ...invalidated]
   }, [])
 
-export default (invalidationRules: Invalidations, actionName: string) =>
+export default (invalidationRules: Invalidations, action: Action) =>
   typeof invalidationRules === 'function'
-    ? invalidationRules(actionName)
-    : defaultInvalidation(invalidationRules, actionName)
+    ? invalidationRules(action)
+    : defaultInvalidation(invalidationRules, action.type)
