@@ -68,8 +68,8 @@ describe('Invalidation', () => {
   it('should invalidate cache using a custom function', () => {
     const cacheManager = createCacheManager({
       include: [{ type: 'pattern', name: '/LOAD$' }],
-      invalidations: (actionType) =>
-        actionType.match('/ERROR$') ? [actionType.replace('ERROR', 'LOAD')] : [],
+      invalidations: (action) =>
+        action.type.match('/ERROR$') ? [action.type.replace('ERROR', 'LOAD')] : [],
     })
     const store = createStore(cacheManager)
 
