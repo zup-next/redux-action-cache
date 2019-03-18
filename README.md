@@ -6,6 +6,8 @@
 ![NPM](https://img.shields.io/npm/l/@zup-next/redux-action-cache.svg)
 ![npm bundle size (version)](https://img.shields.io/bundlephobia/min/@zup-next/redux-action-cache/latest.svg)
 
+**Library status: ALPHA**
+
 This project came up from our need of using a cache system instead of making duplicated requests for 
 resources that might be already available. The primary objective of this library is to provide
 such functionality through a simple configuration file, without altering any of the existing code.
@@ -106,7 +108,7 @@ properties is presented in the following table:
 |---------------|----------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | include       | `Array<string\|object>`    | yes      | The array of actions to cache.                                                                                                                                                                                                               |
 | exclude       | `Array<string>`            | no       | An array of actions to exclude from the cache.                                                                                                                                                                                               |
-| invalidations | `Array<object>\|Function`  | no       | An array of rules to invalidate the cache or an invalidation function. If a function is passed as parameter, it receives an action name and must return a list of actions to invalidate in case the action passed as parameter is triggered. |
+| invalidations | `Array<object>\|Function`  | no       | An array of rules to invalidate the cache or an invalidation function. If a function is passed as parameter, it receives a redux action object and must return a list of actions to invalidate in case the action passed as parameter is triggered. |
 | validity      | `number`                   | no       | Default validity for the cache. If not specified, the default behavior will be not to use time as a factor when deciding if a cache is valid or not.  Time is set in seconds.                                                                                        |
 | persist       | `boolean`                  | no       | States if the default behavior for the cache is to persist or not. If set to true, the cache will persist throughout multiple executions of the website or app. Default is false.                                                            |
 | storage       | `object`                   | no       | Storage to persist the cache. Must implement `getItem(string): string` and `setItem(string): void`. Your storage may also be asynchronous, implementing: `getItem(string): Promise<string>` and `setItem(string): Promise<void>`. Examples of valid storages are: localStorage for web applications; and AsyncStorage for React Native. |
@@ -194,18 +196,18 @@ If, for some reason, the default way of declaring invalidations is not enough fo
 could completely replace the "invalidations" array for a function.
 
 If a function is specified in the parameter "invalidations", what decides if a cache will be
-invalidated or not is the return value of the function. The "invalidations" function receives an
-action name and must return an array of actions to be invalidated. See the example below:
+invalidated or not is the return value of the function. The "invalidations" function receives a
+redux action object and must return an array of actions to be invalidated. See the example below:
 
 ```javascript
 export const cacheManager = createCacheManager({
   include: [
     { type: 'pattern', name: /\/LOAD$/ }
   ],
-  invalidations: (actionName) => {
-    if (actionName.match(/\/ERROR$/)) return [actionName.replace('ERROR', 'LOAD')]
-    if (actionName === 'PURCHASE/SUCCESS') return ['USER_BALANCE/LOAD', 'USER_ORDERS/LOAD']
-    if (actionName === 'USER_DATA/UPDATE') return ['USER_DATA/LOAD']
+  invalidations: (action) => {
+    if (action.type.match(/\/ERROR$/)) return [action.type.replace('ERROR', 'LOAD')]
+    if (action.type === 'PURCHASE/SUCCESS') return ['USER_BALANCE/LOAD', 'USER_ORDERS/LOAD']
+    if (action.type === 'USER_DATA/UPDATE') return ['USER_DATA/LOAD']
 
     return []
   }

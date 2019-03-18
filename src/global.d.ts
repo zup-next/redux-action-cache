@@ -1,4 +1,4 @@
-type InvalidationFunction = (actionName: string) => Array<string>
+type InvalidationFunction = (action: Action) => Array<string>
 
 interface CacheRule {
   type?: 'pattern' | 'action',
