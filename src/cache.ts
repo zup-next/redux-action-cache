@@ -29,8 +29,8 @@ const Cache = () => {
 
   const getCacheByAction = (name: string) => ({ ...cache[name] })
 
-  const removeCache = (name: string) => {
-    delete cache[name]
+  const removeCache = (action: string | string[]): void => {
+    Array.isArray(action) ? action.forEach(name => delete cache[name]) : delete cache[action]
   }
 
   const persist = (setItem: Storage['setItem']) => {

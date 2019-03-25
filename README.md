@@ -295,7 +295,7 @@ This is the only case an alteration to your existing code will be needed. If, fo
 need to invalidate a cache and this invalidation has no relation to the triggering of any other
 action, you can call the method `invalidateCacheFor` of the cache manager.
 
-`invalidateCacheFor()` expects the name of an action as parameter and will immediately invalidate
+`invalidateCacheFor()` expects the action or action list as parameter and will immediately invalidate
 the cache for the given action.
 
 A case where this functionality might be needed is when implementing a pull to refresh. Before
@@ -309,7 +309,7 @@ import cacheManager from './my-cache-manager'
 class MyComponent extends React.PureComponent {
   pullToRefresh() {
     const { load } = this.props
-    cacheManager.invalidateCacheFor('ORDERS/LOAD')
+    cacheManager.invalidateCacheFor(['ORDERS/LOAD', 'CUSTOMER/LOAD'])
     load()
   }
   ...
