@@ -6,8 +6,6 @@
 ![NPM](https://img.shields.io/npm/l/@zup-next/redux-action-cache.svg)
 ![npm bundle size (version)](https://img.shields.io/bundlephobia/min/@zup-next/redux-action-cache/latest.svg)
 
-**Library status: ALPHA**
-
 This project came up from our need of using a cache system instead of making duplicated requests for 
 resources that might be already available. The primary objective of this library is to provide
 such functionality through a simple configuration file, without altering any of the existing code.
@@ -39,6 +37,11 @@ triggered). An action proceeds if it's not cached, otherwise, the lib understand
 is already available and makes redux ignores it completely. When creating the middleware, we need to
 pass in a configuration object stating what actions can be cached, for how long and how they are
 invalidated (if they can ever be invalidated).
+
+## Caveats
+**Alpha**: Library is in alpha version, so send us feedback, issues and suggestions.
+
+**Working with other middlewares**: For the moment, this library doesn't work out of the box with `redux-thunk`. We recommend using `redux-saga`.
 
 # Installing the library
 
