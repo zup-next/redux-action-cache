@@ -19,6 +19,16 @@ describe('Cache Object', () => {
     expect(cache.getCacheByAction(actionName)).toEqual({})
   })
 
+  it('should remove array of cache', () => {
+    const cache = CreateCache()
+    const actions = ['USER/LOAD', 'USER/SAVE']
+    cache.createCache({ name: actions[0], validity: 1, persist: true })
+    cache.createCache({ name: actions[1], validity: 1, persist: false })
+    cache.removeCache(actions)
+    expect(cache.getCacheByAction(actions[0])).toEqual({})
+    expect(cache.getCacheByAction(actions[1])).toEqual({})
+  })
+
   it('Should isActionCached be true ', () => {
     const cache = CreateCache()
     const actionName = 'USER/LOAD'
