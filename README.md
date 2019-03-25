@@ -41,7 +41,7 @@ invalidated (if they can ever be invalidated).
 ## Caveats
 **Alpha**: Library is in alpha version, so send us feedback, issues and suggestions.
 
-**Work with other middleware**: For moment, library don't work with `redux-thunk` middleware, we recommend to use `redux-saga`.
+**Working with other middlewares**: For the moment, this library doesn't work out of the box with `redux-thunk`. We recommend using `redux-saga`.
 
 # Installing the library
 
