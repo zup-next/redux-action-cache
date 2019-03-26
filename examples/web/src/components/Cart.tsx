@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { FC } from 'react'
 import Product from './Product'
 
 interface Props {
   products: ProductComponent[],
   total: string,
-  onCheckoutClicked: (event: any) => void,
+  onCheckoutClicked: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
 }
 
-const Cart = ({ products, total, onCheckoutClicked }: Props) => {
+const Cart: FC<Props> = ({ products, total, onCheckoutClicked }) => {
   const hasProducts = products.length > 0
   const nodes = hasProducts ? (
     products.map(product =>

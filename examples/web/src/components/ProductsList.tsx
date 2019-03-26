@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { FC } from 'react'
 
 interface Props {
   title: string,
   children: any,
 }
 
-const ProductsList = ({ title, children }: Props) => (
+const ProductsList: FC<Props> = ({ title, children }) => (
   <div>
     <h3>{title}</h3>
     <div>{children}</div>

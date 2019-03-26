@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 
-const App = () => (
+const App: FC = () => (
   <div>
     <h2>Shopping Cart Example</h2>
     <hr/>

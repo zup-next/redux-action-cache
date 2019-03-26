@@ -26,9 +26,9 @@ render(
   <Provider store={store}>
     <Router>
       <Switch>
-          <Route path="/" exact={true} component={App} />
-          <Route path="/cart" component={CartContainer} />
-          <Route path="/products" component={ProductsContainer} />
+        <Route path="/" exact={true} component={App} />
+        <Route path="/cart" component={CartContainer} />
+        <Route path="/products" component={ProductsContainer} />
       </Switch>
     </Router>
   </Provider>,

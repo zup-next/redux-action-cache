@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { checkout } from '../actions'
@@ -8,10 +8,10 @@ import Cart from '../components/Cart'
 interface Props {
   products: ProductComponent[],
   total: string,
-  checkout: (products: any) => void,
+  checkout: (products: ProductComponent[]) => void,
 }
 
-const CartContainer = ({ products, total, checkout }: Props) => (
+const CartContainer: FC<Props> = ({ products, total, checkout }) => (
   <div>
     <Link to="/products">Go to Products Page</Link>
     <Cart

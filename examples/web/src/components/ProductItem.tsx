@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import Product from './Product'
 
 interface Props {
@@ -6,7 +6,7 @@ interface Props {
   onAddToCartClicked: any,
 }
 
-const ProductItem = ({ product, onAddToCartClicked }: Props) => (
+const ProductItem: FC<Props> = ({ product, onAddToCartClicked }) => (
   <div style={{ marginBottom: 20 }}>
     <Product
       title={product.title}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 
 interface Props {
   price: number,
@@ -6,7 +6,7 @@ interface Props {
   title: string,
 }
 
-const Product = ({ price, quantity, title }: Props) => (
+const Product: FC<Props> = ({ price, quantity, title }) => (
   <div>
     {title} - &#36;{price}{quantity ? ` x ${quantity}` : null}
   </div>
