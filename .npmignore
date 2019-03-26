@@ -1,3 +1,13 @@
 src
 .eslintrc.js
 rollup.config.js
+lib/types/__tests__/
+.circleci/
+.github/
+.vscode/
+.babelrc
+.editorconfig
+jest.config.js
+yarn.lock
+tsconfig.json
+examples/
