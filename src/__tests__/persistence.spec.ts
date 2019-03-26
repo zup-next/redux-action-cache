@@ -27,7 +27,8 @@ const createAsynchronousStorage = (): AsyncStorage => {
   }
 }
 
-const createStorage = (isAsync: boolean) => isAsync ? createAsynchronousStorage() : createSynchronousStorage()
+const createStorage = (isAsync: boolean): Storage | SimpleStorage | AsyncStorage =>
+  isAsync ? createAsynchronousStorage() : createSynchronousStorage()
 
 const shouldPersist = async (isAsync: boolean) => {
   const storage = createStorage(isAsync)
@@ -56,7 +57,7 @@ const shouldPersist = async (isAsync: boolean) => {
 
 const shouldPersistAllButOne = async (isAsync: boolean) => {
   const storage = createStorage(isAsync)
-  const cacheManagerSettings = {
+  const cacheManagerSettings: ConfigType = {
     include: [
       { type: 'pattern', name: '/LOAD$' },
       { name: 'PRODUCTS/LOAD', persist: false },
@@ -93,7 +94,7 @@ const shouldPersistAllButOne = async (isAsync: boolean) => {
 
 const shouldNotPersistAnyButOne = async (isAsync: boolean) => {
   const storage = createStorage(isAsync)
-  const cacheManagerSettings = {
+  const cacheManagerSettings: ConfigType = {
     include: [
       { type: 'pattern', name: '/LOAD$' },
       { name: 'PRODUCTS/LOAD', persist: true },
@@ -142,7 +143,7 @@ describe('Persistence', () => {
 
   it('async: should run with empty cache if storage has delayed and update cache when it\'s finally loaded', async () => {
     const storage = createAsynchronousStorage()
-    const cacheManagerSettings = {
+    const cacheManagerSettings: ConfigType = {
       include: [{ type: 'pattern', name: '/LOAD$' }],
       persist: true,
       storage,

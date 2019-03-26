@@ -5,29 +5,6 @@ export const LOADING = 'LOADING'
 export const ERROR = 'ERROR'
 export const SUCCESS = 'SUCCESS'
 
-type status = 'NOT_LOADED' | 'LOADING' | 'ERROR' | 'SUCCESS'
-
-interface ResourceState {
-  status: status
-  data: null | any
-}
-
-interface UserData extends ResourceState {
-  saveStatus: status
-}
-
-interface Order {
-  createStatus: status
-  status: status
-}
-
-interface initialState {
-  balance: ResourceState
-  userData: UserData
-  products: ResourceState
-  order: Order
-}
-
 const initialState: initialState = {
   balance: { status: NOT_LOADED, data: null },
   userData: { status: NOT_LOADED, data: null, saveStatus: NOT_LOADED },
@@ -35,8 +12,8 @@ const initialState: initialState = {
   order: { status: NOT_LOADED, createStatus: NOT_LOADED },
 }
 
-const reducer = (state = initialState, action: string) => {
-  const map = {
+const reducer = (state = initialState, action: Action) => {
+  const map: MapReducer = {
     'BALANCE/LOAD': () => ({ ...state, balance: { ...state.balance, status: LOADING } }),
     'BALANCE/ERROR': () => ({ ...state, balance: { ...state.balance, status: ERROR } }),
     'BALANCE/SUCCESS': ({ data }: any) => ({ ...state, balance: { status: SUCCESS, data } }),
@@ -61,4 +38,4 @@ const reducer = (state = initialState, action: string) => {
   return fn ? fn(action) : state
 }
 
-export default (cacheManager) => createStore(reducer, applyMiddleware(cacheManager.getMiddleware()))
+export default (cacheManager: CacheManager) => createStore(reducer, applyMiddleware(cacheManager.getMiddleware()))

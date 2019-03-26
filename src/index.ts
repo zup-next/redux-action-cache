@@ -3,7 +3,7 @@ import getInvalidatedCaches from './invalidate-cache'
 import createCacheForAction from './create-action-cache'
 import forEach from 'lodash/find'
 
-export const createCacheManager = (config: ConfigType) => {
+export const createCacheManager = (config: ConfigType): CacheManager => {
   const cache = createCache()
   if (config.storage) cache.load(config.storage.getItem)
 
