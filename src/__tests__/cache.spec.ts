@@ -58,7 +58,7 @@ describe('create cache for action', () => {
     const cacheManager = createCacheManager({ include: [{ type: 'pattern', name: '/LOAD$' }] })
     const store = createStore(cacheManager)
 
-    expect(store.getState().order.createStatus).toBeFalsy()
+    expect(store.getState().order.createStatus).toBe(NOT_LOADED)
 
     store.dispatch({ type: 'ORDER/CREATE' })
     expect(store.getState().order.createStatus).toBe(LOADING)

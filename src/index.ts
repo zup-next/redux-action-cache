@@ -13,7 +13,7 @@ export const createCacheManager = (config: ConfigType) => {
     if (config.storage) cache.persist(config.storage.setItem)
   }
 
-  const middleware = ({ getState }: Store) => (next: Function) => (action: Action) => {
+  const middleware = ({ getState }: Store) => (next: Next) => (action: Action) => {
     checkInvalidations(action)
     if (cache.isActionCached(action.type)) return getState()
 

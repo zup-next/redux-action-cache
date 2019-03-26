@@ -20,6 +20,11 @@ interface AsyncStorage {
   getItem: (key: string) => Promise<string | null>,
 }
 
+interface SimpleStorage {
+  setItem: (key: string, value: string) => void,
+  getItem: (key: string) => string,
+}
+
 interface ConfigType {
   include: Array<string|CacheRule>,
   exclude?: Array<string>,
@@ -31,6 +36,7 @@ interface ConfigType {
 
 interface Store {
   getState: Function,
+  dispatch: (action: Action) => void
 }
 
 interface Action {
@@ -52,3 +58,9 @@ interface CacheObject {
 interface CacheMap {
   [key: string]: CacheObject,
 }
+
+interface ValuesKey {
+  [key: string]: string
+}
+
+type Next = (action: Action) => void
