@@ -4,8 +4,8 @@ import { wait } from 'utils/tests'
 
 const DELAY = 10
 
-const createSynchronousStorage = () => {
-  const values = {}
+const createSynchronousStorage = (): SimpleStorage => {
+  const values: ValuesKey = {}
 
   return {
     setItem: (key, value) => {
@@ -15,8 +15,8 @@ const createSynchronousStorage = () => {
   }
 }
 
-const createAsynchronousStorage = () => {
-  const values = {}
+const createAsynchronousStorage = (): AsyncStorage => {
+  const values: ValuesKey = {}
 
   return {
     setItem: (key, value) => new Promise(resolve => setTimeout(() => {
@@ -27,9 +27,10 @@ const createAsynchronousStorage = () => {
   }
 }
 
-const createStorage = isAsync => isAsync ? createAsynchronousStorage() : createSynchronousStorage()
+const createStorage = (isAsync: boolean): Storage | SimpleStorage | AsyncStorage =>
+  isAsync ? createAsynchronousStorage() : createSynchronousStorage()
 
-const shouldPersist = async (isAsync) => {
+const shouldPersist = async (isAsync: boolean) => {
   const storage = createStorage(isAsync)
   const cacheManagerSettings = {
     include: [{ name: 'BALANCE/LOAD', persist: true }],
@@ -54,9 +55,9 @@ const shouldPersist = async (isAsync) => {
   expect(store.getState().balance.status).toBe(NOT_LOADED)
 }
 
-const shouldPersistAllButOne = async (isAsync) => {
+const shouldPersistAllButOne = async (isAsync: boolean) => {
   const storage = createStorage(isAsync)
-  const cacheManagerSettings = {
+  const cacheManagerSettings: ConfigType = {
     include: [
       { type: 'pattern', name: '/LOAD$' },
       { name: 'PRODUCTS/LOAD', persist: false },
@@ -91,9 +92,9 @@ const shouldPersistAllButOne = async (isAsync) => {
   expect(store.getState().products.status).toBe(LOADING)
 }
 
-const shouldNotPersistAnyButOne = async (isAsync) => {
+const shouldNotPersistAnyButOne = async (isAsync: boolean) => {
   const storage = createStorage(isAsync)
-  const cacheManagerSettings = {
+  const cacheManagerSettings: ConfigType = {
     include: [
       { type: 'pattern', name: '/LOAD$' },
       { name: 'PRODUCTS/LOAD', persist: true },
@@ -142,7 +143,7 @@ describe('Persistence', () => {
 
   it('async: should run with empty cache if storage has delayed and update cache when it\'s finally loaded', async () => {
     const storage = createAsynchronousStorage()
-    const cacheManagerSettings = {
+    const cacheManagerSettings: ConfigType = {
       include: [{ type: 'pattern', name: '/LOAD$' }],
       persist: true,
       storage,

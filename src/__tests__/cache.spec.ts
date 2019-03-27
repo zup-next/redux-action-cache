@@ -2,7 +2,7 @@ import { createCacheManager } from '../'
 import createStore, { NOT_LOADED, LOADING, SUCCESS } from './mocks/store'
 import snakeCase from 'lodash/snakeCase'
 
-const testCachedResource = (store, resource) => {
+const testCachedResource = (store: Store, resource: string) => {
   const namespace = snakeCase(resource).toUpperCase()
 
   expect(store.getState()[resource].status).toBe(NOT_LOADED)
@@ -17,7 +17,7 @@ const testCachedResource = (store, resource) => {
   expect(store.getState()[resource].status).toBe(SUCCESS)
 }
 
-const testUncachedResource = (store, resource) => {
+const testUncachedResource = (store: Store, resource: string) => {
   const namespace = snakeCase(resource).toUpperCase()
 
   expect(store.getState()[resource].status).toBe(NOT_LOADED)
@@ -58,7 +58,7 @@ describe('create cache for action', () => {
     const cacheManager = createCacheManager({ include: [{ type: 'pattern', name: '/LOAD$' }] })
     const store = createStore(cacheManager)
 
-    expect(store.getState().order.createStatus).toBeFalsy()
+    expect(store.getState().order.createStatus).toBe(NOT_LOADED)
 
     store.dispatch({ type: 'ORDER/CREATE' })
     expect(store.getState().order.createStatus).toBe(LOADING)

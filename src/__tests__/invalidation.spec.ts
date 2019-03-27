@@ -2,7 +2,7 @@ import { createCacheManager } from '../'
 import createStore, { NOT_LOADED, LOADING, ERROR, SUCCESS } from './mocks/store'
 import snakeCase from 'lodash/snakeCase'
 
-const testErrorInvalidation = (store, resource) => {
+const testErrorInvalidation = (store: Store, resource: string) => {
   const namespace = snakeCase(resource).toUpperCase()
 
   expect(store.getState()[resource].status).toBe(NOT_LOADED)
