@@ -13,7 +13,7 @@
   "scripts": {
     "build": "yarn build:ts && yarn build:types",
     "test": "jest",
-    "prepublish": "yarn build",
+    "prepublish": "yarn build && yarn eslint && yarn type-check",
     "type-check": "tsc --noEmit",
     "eslint": "eslint src --ext .ts",
     "build:types": "tsc --emitDeclarationOnly",
