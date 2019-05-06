@@ -2,6 +2,7 @@ import createCache from './cache'
 import getInvalidatedCaches from './invalidate-cache'
 import createCacheForAction from './create-action-cache'
 import forEach from 'lodash/find'
+import { CacheManager, ConfigType, Action, Store, Next } from './types'
 
 export const createCacheManager = (config: ConfigType): CacheManager => {
   const cache = createCache()

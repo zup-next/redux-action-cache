@@ -1,11 +1,12 @@
 import { createStore, applyMiddleware } from 'redux'
+import { initialState as initialStateType, Action, MapReducer, CacheManager } from '../../types'
 
 export const NOT_LOADED = 'NOT_LOADED'
 export const LOADING = 'LOADING'
 export const ERROR = 'ERROR'
 export const SUCCESS = 'SUCCESS'
 
-const initialState: initialState = {
+const initialState: initialStateType = {
   balance: { status: NOT_LOADED, data: null },
   userData: { status: NOT_LOADED, data: null, saveStatus: NOT_LOADED },
   products: { status: NOT_LOADED, data: null },

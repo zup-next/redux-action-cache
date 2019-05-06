@@ -1,6 +1,7 @@
 import { createCacheManager } from '../'
 import createStore, { NOT_LOADED, LOADING, SUCCESS } from './mocks/store'
 import snakeCase from 'lodash/snakeCase'
+import { Store } from '../types'
 
 const testCachedResource = (store: Store, resource: string) => {
   const namespace = snakeCase(resource).toUpperCase()

@@ -1,6 +1,7 @@
 import includes from 'lodash/includes'
 import forEach from 'lodash/forEach'
 import merge from 'lodash/merge'
+import { CacheRule, ConfigType } from './types'
 
 const getCacheRule = (cacheRules: Array<string | CacheRule>, actionName: string) => {
   let result: CacheRule | undefined

@@ -1,5 +1,6 @@
 import { getDate, isExpired } from './utils/date'
 import reduce from 'lodash/reduce'
+import { CacheMap, CacheProperties, AsyncStorage } from './types'
 
 export const cachePersistName = '@ReduxActionCache:cache'
 
