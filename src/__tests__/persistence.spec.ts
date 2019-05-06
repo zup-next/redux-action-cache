@@ -1,6 +1,7 @@
 import { createCacheManager } from '../'
 import createStore, { NOT_LOADED, LOADING, SUCCESS } from './mocks/store'
 import { wait } from 'utils/tests'
+import { ValuesKey, SimpleStorage, AsyncStorage, ConfigType } from '../types'
 
 const DELAY = 10
 

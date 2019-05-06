@@ -1,31 +1,31 @@
 type InvalidationFunction = (action: Action) => Array<string>
 
-interface CacheRule {
+export interface CacheRule {
   type?: 'pattern' | 'action'
   name: string | RegExp
   validity?: number
   persist?: boolean
 }
 
-interface InvalidationRule {
+export interface InvalidationRule {
   type?: 'pattern' | 'action'
   invalidatedBy: string | RegExp
   invalidated: string[] | string
 }
 
-type Invalidations = InvalidationRule[] | InvalidationFunction | undefined
+export type Invalidations = InvalidationRule[] | InvalidationFunction | undefined
 
-interface AsyncStorage {
+export interface AsyncStorage {
   setItem: (key: string, value: string) => Promise<void>
   getItem: (key: string) => Promise<string | null>
 }
 
-interface SimpleStorage {
+export interface SimpleStorage {
   setItem: Storage['setItem']
   getItem: Storage['getItem']
 }
 
-interface ConfigType {
+export interface ConfigType {
   include: string[] | CacheRule[]
   exclude?: string[]
   invalidations?: Invalidations
@@ -34,16 +34,16 @@ interface ConfigType {
   storage?: Storage | AsyncStorage | SimpleStorage
 }
 
-interface Store {
+export interface Store {
   getState: Function
   dispatch: (action: Action) => void
 }
 
-interface Action {
+export interface Action {
   type: string
 }
 
-interface CacheProperties {
+export interface CacheProperties {
   name: string
   validity?: number
   persist?: boolean
@@ -55,17 +55,17 @@ interface CacheObject {
   persist?: boolean
 }
 
-interface CacheMap {
+export interface CacheMap {
   [key: string]: CacheObject
 }
 
-interface ValuesKey {
+export interface ValuesKey {
   [key: string]: string
 }
 
-type Next = (action: Action) => void
+export type Next = (action: Action) => void
 
-interface CacheManager {
+export interface CacheManager {
   getMiddleware: () => ({ getState }: Store) => (next: Next) => (action: Action) => any
   invalidateCacheFor: (action: string | string[]) => void
 }
@@ -86,13 +86,13 @@ interface Order {
   status: status
 }
 
-interface initialState {
+export interface initialState {
   balance: ResourceState
   userData: UserData
   products: ResourceState
   order: Order
 }
 
-interface MapReducer {
+export interface MapReducer {
   [key: string]: (action: Action) => initialState
 }

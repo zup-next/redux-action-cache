@@ -1,4 +1,5 @@
 import reduce from 'lodash/reduce'
+import { InvalidationRule, Invalidations, Action } from './types'
 
 const invalidateByPattern = (actionName: string, rule: InvalidationRule) => {
   if (actionName.match(rule.invalidatedBy)) {
