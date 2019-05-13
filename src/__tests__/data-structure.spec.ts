@@ -45,7 +45,7 @@ describe('Cache Object', () => {
     expect(cache.isActionCached({ type })).toBeFalsy()
   })
 
-  it('withProperties with one property should dictate value of isActionCached', () => {
+  it('withProperties should dictate value of isActionCached', () => {
     const cache = CreateCache()
     const type = 'USER/LOAD'
 
