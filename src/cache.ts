@@ -8,17 +8,27 @@ export const cachePersistName = '@ReduxActionCache:cache'
 const Cache = () => {
   let cache: CacheMap = {}
 
-  const isCacheValid = (name: string) => {
+  const getKey = (action: Action, withProperties: Array<string>) => {
+    if (withProperties) {
+      const values = map(withProperties, (property: string) => action[property])
+      return `(${values.join(',')})`
+    }
+
+    return 'default'
+  }
+
+  const isCacheValid = (action: Action) => {
     const lastUpdated = cache[name].lastUpdated
     const validity = cache[name].validity
 
     return validity ? !isExpired(lastUpdated, validity) : true
   }
 
-  const isActionCached = (name: string) => {
-    if (!cache[name]) return false
+  const isActionCached = (action: Action) => {
+    if (!cache[action.type]) return false
+    if (cache[action.type].instances && cache[action.type].instances[])
 
-    return isCacheValid(name)
+    return isCacheValid(action)
   }
 
   const getInstances = (action: Action, withParams: Array<string>) => {
