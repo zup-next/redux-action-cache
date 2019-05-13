@@ -56,7 +56,7 @@ interface CacheObject {
   validity?: number
   persist?: boolean
   withProperties?: Array<string>
-  cached: Record<string, number> // parameter values to last update
+  lastUpdatedMap: Record<string, number>
 }
 
 export interface CacheMap {

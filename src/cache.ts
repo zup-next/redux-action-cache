@@ -1,6 +1,7 @@
 import { getDate, isExpired } from './utils/date'
 import reduce from 'lodash/reduce'
 import map from 'lodash/map'
+import isEmpty from 'lodash/isEmpty'
 import { CacheMap, CacheProperties, AsyncStorage, Action } from './types'
 
 export const cachePersistName = '@ReduxActionCache:cache'
@@ -8,44 +9,33 @@ export const cachePersistName = '@ReduxActionCache:cache'
 const Cache = () => {
   let cache: CacheMap = {}
 
-  const getKey = (action: Action, withProperties: Array<string>) => {
-    if (withProperties) {
-      const values = map(withProperties, (property: string) => action[property])
-      return `(${values.join(',')})`
-    }
+  const getUpdateKey = (action: Action, withProperties?: Array<string>) => {
+    if (isEmpty(withProperties)) return 'default'
+    const values = map(withProperties, (property: string) => action[property])
 
-    return 'default'
+    return `(${values.join(',')})`
   }
 
-  const isCacheValid = (action: Action) => {
-    const lastUpdated = cache[name].lastUpdated
-    const validity = cache[name].validity
-
-    return validity ? !isExpired(lastUpdated, validity) : true
-  }
+  const isCacheValid = (lastUpdated: number, validity?: number) =>
+    validity ? !isExpired(lastUpdated, validity) : true
 
   const isActionCached = (action: Action) => {
-    if (!cache[action.type]) return false
-    if (cache[action.type].instances && cache[action.type].instances[])
-
-    return isCacheValid(action)
+    const cacheInfo = cache[action.type]
+    if (!cacheInfo) return false
+    const key = getUpdateKey(action, cacheInfo.withProperties)
+    const lastUpdated = cacheInfo.lastUpdatedMap[key]
+    if (!lastUpdated) return false
+    return isCacheValid(lastUpdated, cacheInfo.validity)
   }
 
-  const getInstances = (action: Action, withParams: Array<string>) => {
-    const key = map(withParams, propertyName => action[propertyName]).join(',')
-    const value = getDate()
-
-    return cache[action.type]
-      ? { ...cache[action.type].instances, [key]: value }
-      : { [key]: value }
-  }
-
-  const createCache = ({ action, withParams, validity, persist }: CacheProperties) => {
+  const createCache = ({ action, withProperties, validity, persist }: CacheProperties) => {
+    const previousMap = cache[action.type] ? cache[action.type].lastUpdatedMap : {}
+    const key = getUpdateKey(action, withProperties)
     cache[action.type] = {
-      lastUpdated: getDate(),
       validity,
       persist,
-      instances: withParams ? getInstances(action, withParams) : undefined,
+      withProperties,
+      lastUpdatedMap: { ...previousMap, [key]: getDate() },
     }
   }
 
