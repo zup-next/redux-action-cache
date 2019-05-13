@@ -1,7 +1,7 @@
 import includes from 'lodash/includes'
 import forEach from 'lodash/forEach'
 import merge from 'lodash/merge'
-import { CacheRule, ConfigType } from './types'
+import { CacheRule, ConfigType, Action, CacheProperties } from './types'
 
 const getCacheRule = (cacheRules: Array<string | CacheRule>, actionName: string) => {
   let result: CacheRule | undefined
@@ -17,15 +17,16 @@ const getCacheRule = (cacheRules: Array<string | CacheRule>, actionName: string)
   return result
 }
 
-export default (config: ConfigType, actionName: string) => {
-  const isExcluded = includes(config.exclude, actionName)
+export default (config: ConfigType, action: Action): CacheProperties | undefined => {
+  const isExcluded = includes(config.exclude, action.type)
   if (isExcluded) return
 
-  const cacheRule = getCacheRule(config.include, actionName)
+  const cacheRule = getCacheRule(config.include, action.type)
 
   if (cacheRule) {
     return {
-      name: actionName,
+      action,
+      withProperties: cacheRule.withProperties,
       validity: cacheRule.validity !== undefined ? cacheRule.validity : config.validity,
       persist: cacheRule.persist !== undefined ? cacheRule.persist : config.persist,
     }

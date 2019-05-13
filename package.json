@@ -1,7 +1,7 @@
 {
   "name": "@zup-next/redux-action-cache",
   "description": "Cache your redux actions without editing your actions",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "main": "lib/redux-action-cache.js",
   "types": "lib/types",
   "license": "MIT",

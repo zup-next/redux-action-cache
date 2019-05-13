@@ -6,7 +6,7 @@
 ![NPM](https://img.shields.io/npm/l/@zup-next/redux-action-cache.svg)
 ![npm bundle size (version)](https://img.shields.io/bundlephobia/min/@zup-next/redux-action-cache/latest.svg)
 
-This project came up from our need of using a cache system instead of making duplicated requests for 
+This project came up from our need of using a cache system instead of making duplicated requests for
 resources that might be already available. The primary objective of this library is to provide
 such functionality through a simple configuration file, without altering any of the existing code.
 
@@ -122,12 +122,13 @@ properties is presented in the following table:
 The elements of the array "include" can be either strings or objects. The object syntax is used to
 define more complex cache rules, its properties are:
 
-| Property | Type                  | Required | Description                                                                                                                                                                                                                                    |
-|----------|-----------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| type     | `'pattern'\|'action'` | no       | Type of the inclusion rule. If type is 'pattern', it will try to cache every action matching the given pattern. Otherwise, it will cache only the action with the given name. If not specified, 'action' is assumed.                           |
-| name     | `string\|Regex`       | yes      | Exact name of the action to cache (if type is 'action') or the pattern of the actions to cache (if type is 'pattern').                                                                                                                         |
-| validity | `number`              | no       | Time in seconds for the cache to expire. If not specified, the expiration time defined in the root of the configuration object will be used. If null or undefined, time won't be used to decide wether the cache is expired or not.          |
-| persist  | `boolean`             | no       | Specifies if this cache should survive throughout multiple executions of the website or app. When set to true, the cache information will be saved in the local storage. The default value is taken from the root of the configuration object. |
+| Property        | Type                  | Required | Description                                                                                                                                                                                                                                    |
+|-----------------|-----------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| type            | `'pattern'\|'action'` | no       | Type of the inclusion rule. If type is 'pattern', it will try to cache every action matching the given pattern. Otherwise, it will cache only the action with the given name. If not specified, 'action' is assumed.                           |
+| name            | `string\|Regex`       | yes      | Exact name of the action to cache (if type is 'action') or the pattern of the actions to cache (if type is 'pattern').                                                                                                                         |
+| validity        | `number`              | no       | Time in seconds for the cache to expire. If not specified, the expiration time defined in the root of the configuration object will be used. If null or undefined, time won't be used to decide wether the cache is expired or not.            |
+| persist         | `boolean`             | no       | Specifies if this cache should survive throughout multiple executions of the website or app. When set to true, the cache information will be saved in the local storage. The default value is taken from the root of the configuration object. |
+| withProperties  | `Array<string>`       | no       | Available since version 0.5.0. If specified, a cache won't be identified only by the action's type, but also by the properties in this array. For instance if `withProperties` is `['id']` and `name` is `PRODUCTS/LOAD`, the actions `{ type: 'PRODUCTS/LOAD', id: '001' }` and `{ type: 'PRODUCTS/LOAD', id: '002' }` will be considered two different caches, i.e. if only the first is dispatched, the second won't be considered cached and will normally proceed to redux. |
 
 Defining an element of the "include" array as the string `'MY_ACTION_NAME'`, for instance,  is a
 shortcut to the alternate object syntax: `{ type: 'action', name: 'MY_ACTION_NAME' }`.

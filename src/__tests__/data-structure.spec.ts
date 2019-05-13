@@ -4,51 +4,73 @@ import { wait } from '../utils/tests'
 describe('Cache Object', () => {
   it('Should create cache', () => {
     const cache = CreateCache()
-    const actionName = 'USER/LOAD'
-    cache.createCache({ name: actionName, validity: 3000, persist: true })
-    const cacheObject = cache.getCacheByAction(actionName)
+    const type = 'USER/LOAD'
+    cache.createCache({ action: { type }, withProperties: ['id'], validity: 3000, persist: true })
+    const cacheObject = cache.getCacheByAction(type)
     expect(cacheObject.validity).toBe(3000)
     expect(cacheObject.persist).toBeTruthy()
+    expect(cacheObject.withProperties).toEqual(['id'])
   })
 
   it('Should remove cache', () => {
     const cache = CreateCache()
-    const actionName = 'USER/LOAD'
-    cache.createCache({ name: actionName, validity: 3000, persist: true })
-    cache.removeCache(actionName)
-    expect(cache.getCacheByAction(actionName)).toEqual({})
+    const type = 'USER/LOAD'
+    cache.createCache({ action: { type }, validity: 3000, persist: true })
+    cache.removeCache(type)
+    expect(cache.getCacheByAction(type)).toEqual({})
   })
 
   it('should remove array of cache', () => {
     const cache = CreateCache()
-    const actions = ['USER/LOAD', 'USER/SAVE']
-    cache.createCache({ name: actions[0], validity: 1, persist: true })
-    cache.createCache({ name: actions[1], validity: 1, persist: false })
-    cache.removeCache(actions)
-    expect(cache.getCacheByAction(actions[0])).toEqual({})
-    expect(cache.getCacheByAction(actions[1])).toEqual({})
+    const actionTypes = ['USER/LOAD', 'USER/SAVE']
+    cache.createCache({ action: { type: actionTypes[0] }, validity: 1, persist: true })
+    cache.createCache({ action: { type: actionTypes[1] }, validity: 1, persist: false })
+    cache.removeCache(actionTypes)
+    expect(cache.getCacheByAction(actionTypes[0])).toEqual({})
+    expect(cache.getCacheByAction(actionTypes[1])).toEqual({})
   })
 
-  it('Should isActionCached be true ', () => {
+  it('isActionCached should be true', () => {
     const cache = CreateCache()
-    const actionName = 'USER/LOAD'
-    cache.createCache({ name: actionName, validity: 3000, persist: true })
-    expect(cache.isActionCached(actionName)).toBeTruthy()
+    const type = 'USER/LOAD'
+    cache.createCache({ action: { type }, validity: 3000 })
+    expect(cache.isActionCached({ type })).toBeTruthy()
   })
 
-  it('Should isActionCached be false ', async () => {
+  it('isActionCached should be false ', async () => {
     const cache = CreateCache()
-    const actionName = 'USER/LOAD'
-    cache.createCache({ name: actionName, validity: 1, persist: true })
+    const type = 'USER/LOAD'
+    cache.createCache({ action: { type }, validity: 1 })
     await wait(2000)
-    expect(cache.isActionCached(actionName)).toBeFalsy()
+    expect(cache.isActionCached({ type })).toBeFalsy()
+  })
+
+  it('withProperties should dictate value of isActionCached', () => {
+    const cache = CreateCache()
+    const type = 'USER/LOAD'
+
+    cache.createCache({ action: { type, id: '001' }, withProperties: ['id'], validity: 3000 })
+    expect(cache.isActionCached({ type, id: '001' })).toBeTruthy()
+    expect(cache.isActionCached({ type, id: '001', other: 'aaa' })).toBeTruthy()
+    expect(cache.isActionCached({ type, id: '002' })).toBeFalsy()
+    expect(cache.isActionCached({ type })).toBeFalsy()
+
+    cache.createCache({ action: { type, id: '002' }, withProperties: ['id'], validity: 3000 })
+    expect(cache.isActionCached({ type, id: '001' })).toBeTruthy()
+    expect(cache.isActionCached({ type, id: '002' })).toBeTruthy()
+    expect(cache.isActionCached({ type })).toBeFalsy()
+
+    cache.createCache({ action: { type }, withProperties: ['id'], validity: 3000 })
+    expect(cache.isActionCached({ type, id: '001' })).toBeTruthy()
+    expect(cache.isActionCached({ type, id: '002' })).toBeTruthy()
+    expect(cache.isActionCached({ type })).toBeTruthy()
   })
 
   it('Should persist cache', async () => {
     const localStorageMock = jest.fn()
     const cache = CreateCache()
-    const actionName = 'USER/LOAD'
-    cache.createCache({ name: actionName, validity: 1, persist: true })
+    const type = 'USER/LOAD'
+    cache.createCache({ action: { type }, validity: 1, persist: true })
     await cache.persist(localStorageMock)
     expect(localStorageMock).toHaveBeenCalled()
   })
@@ -56,12 +78,12 @@ describe('Cache Object', () => {
   it('Should persist cache flagged true', async () => {
     const localStorageMock = jest.fn()
     const cache = CreateCache()
-    const persistActionName = 'USER/LOAD'
-    const notPersistActionName = 'USER/SAVE'
-    cache.createCache({ name: persistActionName, validity: 1, persist: true })
-    cache.createCache({ name: notPersistActionName, validity: 1, persist: false })
+    const persistActionType = 'USER/LOAD'
+    const notPersistActionType = 'USER/SAVE'
+    cache.createCache({ action: { type: persistActionType }, validity: 1, persist: true })
+    cache.createCache({ action: { type: notPersistActionType }, validity: 1, persist: false })
     await cache.persist(localStorageMock)
-    const persistedCache = { [persistActionName]: cache.getCacheByAction(persistActionName) }
+    const persistedCache = { [persistActionType]: cache.getCacheByAction(persistActionType) }
     expect(localStorageMock).toHaveBeenCalledWith(cachePersistName, JSON.stringify(persistedCache))
   })
 
