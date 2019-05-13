@@ -73,4 +73,30 @@ describe('Expiration', () => {
     expect(store.getState().balance.status).toBe(SUCCESS)
     expect(store.getState().products.status).toBe(LOADING)
   })
+
+  it('should expire with property', async () => {
+    const cacheManager = createCacheManager({ include: [{ name: 'BALANCE/LOAD', validity: 1, withProperties: ['id'] }] })
+    const store = createStore(cacheManager)
+    store.dispatch({ type: 'BALANCE/LOAD', id: '001' })
+    store.dispatch({ type: 'BALANCE/SUCCESS' })
+    store.dispatch({ type: 'BALANCE/LOAD', id: '001' })
+
+    expect(store.getState().balance.status).toBe(SUCCESS)
+
+    await wait(600)
+    store.dispatch({ type: 'BALANCE/LOAD', id: '002' })
+    expect(store.getState().balance.status).toBe(LOADING)
+    store.dispatch({ type: 'BALANCE/SUCCESS' })
+
+    await wait(600)
+    store.dispatch({ type: 'BALANCE/LOAD', id: '001' })
+    expect(store.getState().balance.status).toBe(LOADING)
+    store.dispatch({ type: 'BALANCE/SUCCESS' })
+    store.dispatch({ type: 'BALANCE/LOAD', id: '002' })
+    expect(store.getState().balance.status).toBe(SUCCESS)
+
+    await wait(600)
+    store.dispatch({ type: 'BALANCE/LOAD', id: '002' })
+    expect(store.getState().balance.status).toBe(LOADING)
+  })
 })

@@ -5,10 +5,11 @@ describe('Cache Object', () => {
   it('Should create cache', () => {
     const cache = CreateCache()
     const type = 'USER/LOAD'
-    cache.createCache({ action: { type }, validity: 3000, persist: true })
+    cache.createCache({ action: { type }, withProperties: ['id'], validity: 3000, persist: true })
     const cacheObject = cache.getCacheByAction(type)
     expect(cacheObject.validity).toBe(3000)
     expect(cacheObject.persist).toBeTruthy()
+    expect(cacheObject.withProperties).toEqual(['id'])
   })
 
   it('Should remove cache', () => {
@@ -29,19 +30,40 @@ describe('Cache Object', () => {
     expect(cache.getCacheByAction(actionTypes[1])).toEqual({})
   })
 
-  it('Should isActionCached be true ', () => {
+  it('isActionCached should be true', () => {
     const cache = CreateCache()
     const type = 'USER/LOAD'
-    cache.createCache({ action: { type }, validity: 3000, persist: true })
+    cache.createCache({ action: { type }, validity: 3000 })
     expect(cache.isActionCached({ type })).toBeTruthy()
   })
 
-  it('Should isActionCached be false ', async () => {
+  it('isActionCached should be false ', async () => {
     const cache = CreateCache()
     const type = 'USER/LOAD'
-    cache.createCache({ action: { type }, validity: 1, persist: true })
+    cache.createCache({ action: { type }, validity: 1 })
     await wait(2000)
     expect(cache.isActionCached({ type })).toBeFalsy()
+  })
+
+  it('withProperties with one property should dictate value of isActionCached', () => {
+    const cache = CreateCache()
+    const type = 'USER/LOAD'
+
+    cache.createCache({ action: { type, id: '001' }, withProperties: ['id'], validity: 3000 })
+    expect(cache.isActionCached({ type, id: '001' })).toBeTruthy()
+    expect(cache.isActionCached({ type, id: '001', other: 'aaa' })).toBeTruthy()
+    expect(cache.isActionCached({ type, id: '002' })).toBeFalsy()
+    expect(cache.isActionCached({ type })).toBeFalsy()
+
+    cache.createCache({ action: { type, id: '002' }, withProperties: ['id'], validity: 3000 })
+    expect(cache.isActionCached({ type, id: '001' })).toBeTruthy()
+    expect(cache.isActionCached({ type, id: '002' })).toBeTruthy()
+    expect(cache.isActionCached({ type })).toBeFalsy()
+
+    cache.createCache({ action: { type }, withProperties: ['id'], validity: 3000 })
+    expect(cache.isActionCached({ type, id: '001' })).toBeTruthy()
+    expect(cache.isActionCached({ type, id: '002' })).toBeTruthy()
+    expect(cache.isActionCached({ type })).toBeTruthy()
   })
 
   it('Should persist cache', async () => {
