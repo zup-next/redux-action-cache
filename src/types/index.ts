@@ -3,6 +3,7 @@ type InvalidationFunction = (action: Action) => Array<string>
 export interface CacheRule {
   type?: 'pattern' | 'action'
   name: string | RegExp
+  withParams?: Array<string>
   validity?: number
   persist?: boolean
 }
@@ -40,11 +41,13 @@ export interface Store {
 }
 
 export interface Action {
-  type: string
+  type: string,
+  [key: string]: any,
 }
 
 export interface CacheProperties {
-  name: string
+  action: Action
+  withParams?: Array<string>
   validity?: number
   persist?: boolean
 }
@@ -53,6 +56,8 @@ interface CacheObject {
   lastUpdated: number
   validity?: number
   persist?: boolean
+  withParams?: Array<string>
+  instances?: Record<string, number>
 }
 
 export interface CacheMap {

@@ -1,6 +1,7 @@
 import { getDate, isExpired } from './utils/date'
 import reduce from 'lodash/reduce'
-import { CacheMap, CacheProperties, AsyncStorage } from './types'
+import map from 'lodash/map'
+import { CacheMap, CacheProperties, AsyncStorage, Action } from './types'
 
 export const cachePersistName = '@ReduxActionCache:cache'
 
@@ -20,11 +21,21 @@ const Cache = () => {
     return isCacheValid(name)
   }
 
-  const createCache = ({ name, validity, persist }: CacheProperties) => {
-    cache[name] = {
+  const getInstances = (action: Action, withParams: Array<string>) => {
+    const key = map(withParams, propertyName => action[propertyName]).join(',')
+    const value = getDate()
+
+    return cache[action.type]
+      ? { ...cache[action.type].instances, [key]: value }
+      : { [key]: value }
+  }
+
+  const createCache = ({ action, withParams, validity, persist }: CacheProperties) => {
+    cache[action.type] = {
       lastUpdated: getDate(),
       validity,
       persist,
+      instances: withParams ? getInstances(action, withParams) : undefined,
     }
   }
 
