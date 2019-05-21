@@ -1,7 +1,7 @@
 {
   "name": "@zup-next/redux-action-cache",
   "description": "Cache your redux actions without editing your actions",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "main": "lib/redux-action-cache.js",
   "types": "lib/types",
   "license": "MIT",
@@ -11,12 +11,12 @@
   },
   "homepage": "https://github.com/zup-next/redux-action-cache",
   "scripts": {
-    "build": "yarn build:ts && yarn build:types",
+    "build": "yarn clean:lib && yarn build:ts && yarn build:types",
     "test": "jest",
     "prepublish": "yarn build && yarn eslint && yarn type-check",
     "type-check": "tsc --noEmit",
     "eslint": "eslint src --ext .ts",
-    "build:types": "yarn clean:lib && tsc --emitDeclarationOnly",
+    "build:types": "tsc --emitDeclarationOnly",
     "build:ts": "rollup -c",
     "clean:lib": "rm -rf lib"
   },
