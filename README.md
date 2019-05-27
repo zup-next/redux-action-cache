@@ -1,4 +1,4 @@
-# <img src='https://raw.githubusercontent.com/zup-next/redux-action-cache/readme-header/header.png' height='60' alt='redux-action-cache' aria-label='redux-action-cache' />
+# <img src='https://raw.githubusercontent.com/zup-next/redux-action-cache/header.png' height='60' alt='redux-action-cache' aria-label='redux-action-cache' />
 
 ![CircleCI branch](https://img.shields.io/circleci/project/github/zup-next/redux-action-cache/master.svg)
 ![npm](https://img.shields.io/npm/v/@zup-next/redux-action-cache.svg)
