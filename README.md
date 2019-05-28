@@ -1,5 +1,6 @@
 # <img src='https://raw.githubusercontent.com/zup-next/redux-action-cache/master/header.png' height='60' alt='redux-action-cache' aria-label='redux-action-cache' />
 
+![Codecov](https://img.shields.io/codecov/c/github/zup-next/redux-action-cache.svg)
 ![CircleCI branch](https://img.shields.io/circleci/project/github/zup-next/redux-action-cache/master.svg)
 ![npm](https://img.shields.io/npm/v/@zup-next/redux-action-cache.svg)
 ![NPM](https://img.shields.io/npm/l/@zup-next/redux-action-cache.svg)
